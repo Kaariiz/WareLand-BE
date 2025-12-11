@@ -44,5 +44,6 @@ public class UserController {
     public ResponseEntity<ApiResponse<Void>> deleteAccount(@PathVariable Long id) {
         userService.deleteAccount(id);
         return ResponseEntity.ok(ApiResponse.success("Akun berhasil dihapus", null));
+
     }
 }
