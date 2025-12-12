@@ -96,10 +96,39 @@ public class UserService {
 
     public UserProfileResponse updateProfile(Long id, UpdateProfileRequest request) {
         User user = getUserById(id);
-        user.updateProfile(request.getName(), request.getEmail(), request.getPhoneNumber());
+
+        if (request.getEmail() != null &&
+                !request.getEmail().equals(user.getEmail()) &&
+                userRepository.existsByEmail(request.getEmail())) {
+
+            throw new BadRequestException("Email sudah digunakan");
+        }
+
+        // Update data basic (parsial)
+        user.updateBasicProfile(
+                request.getName(),
+                request.getEmail(),
+                request.getPhoneNumber()
+        );
+
+        // Jika user ingin update password
+        if (request.getOldPassword() != null || request.getNewPassword() != null) {
+
+            if (request.getOldPassword() == null || request.getNewPassword() == null) {
+                throw new BadRequestException("Password lama dan baru harus diisi");
+            }
+
+            if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+                throw new InvalidCredentialException("Password lama tidak sesuai");
+            }
+
+            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        }
+
         User updated = userRepository.save(user);
         return mapToProfile(updated);
     }
+
 
     public void deleteAccount(Long id) {
         User user = getUserById(id);
