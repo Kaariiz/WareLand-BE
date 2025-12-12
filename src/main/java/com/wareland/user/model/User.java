@@ -55,11 +55,19 @@ public abstract class User {
         return this.username.equals(username);
     }
 
-    public void updateProfile(String newName, String newEmail, String newPhone) {
-        this.name = newName;
-        this.email = newEmail;
-        this.phoneNumber = newPhone;
+
+    public void updateBasicProfile(String name, String email, String phoneNumber) {
+        if (name != null) {
+            this.name = name;
+        }
+        if (email != null) {
+            this.email = email;
+        }
+        if (phoneNumber != null) {
+            this.phoneNumber = phoneNumber;
+        }
     }
+
 
     @PrePersist
     public void prePersist() {
