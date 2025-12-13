@@ -47,6 +47,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("Login berhasil", response));
     }
 
+
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserProfileResponse>> me() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
