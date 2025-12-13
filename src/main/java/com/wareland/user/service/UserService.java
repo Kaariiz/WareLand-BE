@@ -94,6 +94,13 @@ public class UserService {
         return mapToProfile(user);
     }
 
+    @Transactional(readOnly = true)
+    public UserProfileResponse getProfileByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User dengan username " + username + " tidak ditemukan"));
+        return mapToProfile(user);
+    }
+
     public UserProfileResponse updateProfile(Long id, UpdateProfileRequest request) {
         User user = getUserById(id);
 
