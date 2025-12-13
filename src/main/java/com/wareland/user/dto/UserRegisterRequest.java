@@ -1,6 +1,7 @@
 package com.wareland.user.dto;
 
 import com.wareland.user.model.UserRole;
+import com.wareland.common.validation.StrongPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ public class UserRegisterRequest {
 
     @NotBlank
     @Size(min = 6, max = 100)
+    @StrongPassword
     private String password;
 
     @NotBlank
