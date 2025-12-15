@@ -43,7 +43,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
-
+        
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // Do not apply JWT authentication for CORS preflight requests
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 }
