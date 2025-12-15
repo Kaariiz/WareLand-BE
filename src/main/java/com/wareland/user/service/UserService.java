@@ -78,14 +78,43 @@ public class UserService {
     }
 
     public UserProfileResponse login(LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new InvalidCredentialException("Username atau password salah"));
+        String identifier = request.getUsername() != null ? request.getUsername().trim() : null;
+        if (identifier == null || identifier.isEmpty()) {
+            throw new BadRequestException("Username/Email harus diisi");
+        }
+
+        User user;
+        if (identifier.contains("@")) {
+            // Treat as email; validate basic email format before querying
+            if (!isValidEmail(identifier)) {
+                throw new BadRequestException("Format email tidak valid");
+            }
+            user = userRepository.findByEmail(identifier)
+                    .orElseThrow(() -> new InvalidCredentialException("Email atau password salah"));
+        } else {
+            user = userRepository.findByUsername(identifier)
+                    .orElseThrow(() -> new InvalidCredentialException("Username atau password salah"));
+        }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new InvalidCredentialException("Username atau password salah");
+            // Samakan pesan untuk keamanan (tidak bocorkan mana yang salah)
+            throw new InvalidCredentialException("Kredensial login salah");
         }
 
         return mapToProfile(user);
+    }
+
+    private boolean isValidEmail(String email) {
+        // Sederhana: harus ada satu '@', bagian lokal dan domain non-kosong, domain berisi '.'
+        // Ini bukan validasi RFC lengkap, tetapi cukup untuk input login.
+        int at = email.indexOf('@');
+        if (at <= 0 || at != email.lastIndexOf('@')) return false;
+        String local = email.substring(0, at);
+        String domain = email.substring(at + 1);
+        if (local.isEmpty() || domain.isEmpty()) return false;
+        if (!domain.contains(".")) return false;
+        if (domain.startsWith(".") || domain.endsWith(".")) return false;
+        return true;
     }
 
     @Transactional(readOnly = true)
