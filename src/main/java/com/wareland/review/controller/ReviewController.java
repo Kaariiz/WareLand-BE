@@ -1,6 +1,7 @@
 package com.wareland.review.controller;
 
 import com.wareland.common.response.ApiResponse;
+import com.wareland.review.dto.ReviewBuyerResponse;
 import com.wareland.review.dto.ReviewCreateRequest;
 import com.wareland.review.dto.ReviewResponse;
 import com.wareland.review.dto.ReviewUpdateRequest;
@@ -41,6 +42,13 @@ public class ReviewController {
         return ResponseEntity.ok(ApiResponse.success(responses));
     }
 
+    // GET → menampilkan semua review milik seorang buyer (PRIVATE)
+    @GetMapping("/buyer/{buyerId}")
+    public ResponseEntity<ApiResponse<List<ReviewBuyerResponse>>> getByBuyer(@PathVariable("buyerId") Long buyerId) {
+        List<ReviewBuyerResponse> responses = reviewService.getReviewsByBuyer(buyerId);
+        return ResponseEntity.ok(ApiResponse.success(responses));
+    }
+}
     // ================= UPDATE =================
     @PutMapping("/{reviewId}")
     public ResponseEntity<ApiResponse<ReviewResponse>> update(

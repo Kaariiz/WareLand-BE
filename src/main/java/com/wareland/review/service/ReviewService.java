@@ -4,6 +4,7 @@ import com.wareland.common.exception.BusinessException;
 import com.wareland.common.exception.ResourceNotFoundException;
 import com.wareland.property.model.Property;
 import com.wareland.property.repository.PropertyRepository;
+import com.wareland.review.dto.ReviewBuyerResponse;
 import com.wareland.review.dto.ReviewCreateRequest;
 import com.wareland.review.dto.ReviewResponse;
 import com.wareland.review.dto.ReviewUpdateRequest;
@@ -97,6 +98,21 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<ReviewBuyerResponse> getReviewsByBuyer(Long buyerId) {
+        // Validasi: buyer harus ada
+        User user = userRepository.findById(buyerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Buyer dengan ID " + buyerId + " tidak ditemukan"));
+        if (user.getUserRole() != UserRole.BUYER || !(user instanceof Buyer)) {
+            throw new ResourceNotFoundException("Buyer dengan ID " + buyerId + " tidak ditemukan");
+        }
+
+        List<Review> reviews = reviewRepository.findAllByBuyerUserIdOrderByCreatedAtDesc(buyerId);
+        return reviews.stream()
+                .map(reviewMapper::toBuyerResponse)
+                .collect(Collectors.toList());
+    }
+}
     // ================= UPDATE =================
     public ReviewResponse updateReview(Long reviewId, Long buyerId, ReviewUpdateRequest request) {
 
