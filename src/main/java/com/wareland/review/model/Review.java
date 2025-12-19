@@ -10,11 +10,15 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reviews",
+@Table(
+        name = "reviews",
         uniqueConstraints = {
-                // Satu buyer hanya boleh memberi satu review untuk satu property
-                @UniqueConstraint(name = "uk_review_buyer_property", columnNames = {"buyer_id", "property_id"})
-        })
+                @UniqueConstraint(
+                        name = "uk_review_buyer_property",
+                        columnNames = {"buyer_id", "property_id"}
+                )
+        }
+)
 public class Review {
 
     @Id
@@ -41,9 +45,17 @@ public class Review {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column
+    private LocalDateTime updatedAt;
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -84,5 +96,9 @@ public class Review {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
