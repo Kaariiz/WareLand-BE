@@ -17,7 +17,7 @@ public class CorsConfig {
         // Allowed origins: local Next.js and production FE (if exists)
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "https://wareland-fe-production"
+                "https://ware-land-fe.vercel.app"
         ));
         // Allow credentials so browser can send Authorization header
         config.setAllowCredentials(true);
