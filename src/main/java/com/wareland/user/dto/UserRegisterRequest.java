@@ -1,7 +1,8 @@
 package com.wareland.user.dto;
 
-import com.wareland.user.model.UserRole;
 import com.wareland.common.validation.StrongPassword;
+import com.wareland.user.model.UserRole;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

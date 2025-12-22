@@ -3,7 +3,7 @@ package com.wareland.user.dto;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * DTO untuk request login.
+ * DTO untuk menerima request login user.
  */
 public class LoginRequest {
 

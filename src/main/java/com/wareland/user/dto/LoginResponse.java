@@ -1,10 +1,15 @@
 package com.wareland.user.dto;
 
+/**
+ * DTO untuk response login yang berisi JWT token dan profil user.
+ */
 public class LoginResponse {
+
     private String token;
     private UserProfileResponse profile;
 
-    public LoginResponse() {}
+    public LoginResponse() {
+    }
 
     public LoginResponse(String token, UserProfileResponse profile) {
         this.token = token;

@@ -1,16 +1,16 @@
 package com.wareland.property.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.wareland.common.exception.BadRequestException;
 import com.wareland.common.exception.BusinessException;
-import com.wareland.common.exception.ResourceNotFoundException;
 import com.wareland.property.model.Property;
 import com.wareland.property.repository.PropertyRepository;
 import com.wareland.user.model.Seller;
 import com.wareland.user.model.UserRole;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional

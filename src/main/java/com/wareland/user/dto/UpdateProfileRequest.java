@@ -1,9 +1,14 @@
 package com.wareland.user.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import com.wareland.common.validation.StrongPassword;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+
+/**
+ * DTO untuk request update profil user.
+ * Seluruh field bersifat opsional.
+ */
 public class UpdateProfileRequest {
 
     private String name;
@@ -13,8 +18,9 @@ public class UpdateProfileRequest {
 
     private String phoneNumber;
 
-    // Optional password update
+    // Digunakan jika user ingin mengganti password
     private String oldPassword;
+
     @Size(min = 6, max = 100)
     @StrongPassword
     private String newPassword;

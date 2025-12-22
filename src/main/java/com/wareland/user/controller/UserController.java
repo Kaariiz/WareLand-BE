@@ -1,16 +1,24 @@
 package com.wareland.user.controller;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.wareland.common.response.ApiResponse;
 import com.wareland.user.dto.UpdateProfileRequest;
 import com.wareland.user.dto.UserProfileResponse;
 import com.wareland.user.service.UserService;
+
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 /**
- * Controller untuk operasi mandiri user:
- * lihat profil, update profil, dan hapus akun.
+ * Controller untuk operasi user:
+ * melihat data user, mengelola profil, dan menghapus akun.
  */
 @RestController
 @RequestMapping("/api/users")
@@ -22,41 +30,66 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Get all users
+    /**
+     * Mengambil seluruh data user.
+     */
     @GetMapping
     public ResponseEntity<ApiResponse<?>> getAllUsers() {
-        return ResponseEntity.ok(ApiResponse.success(userService.getAllUsers()));
+        return ResponseEntity.ok(
+                ApiResponse.success(userService.getAllUsers())
+        );
     }
 
-
-    // Get profile by ID (untuk sekarang tanpa auth, bisa ditambahkan nanti)
+    /**
+     * Mengambil profil user berdasarkan ID.
+     * (Saat ini belum dibatasi autentikasi)
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<UserProfileResponse>> getProfile(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<UserProfileResponse>> getProfile(
+            @PathVariable Long id
+    ) {
         UserProfileResponse profile = userService.getProfile(id);
         return ResponseEntity.ok(ApiResponse.success(profile));
     }
 
-    // Update profile mandiri
+    /**
+     * Update profil user berdasarkan ID.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserProfileResponse>> updateProfile(
             @PathVariable Long id,
-            @Valid @RequestBody UpdateProfileRequest request) {
+            @Valid @RequestBody UpdateProfileRequest request
+    ) {
+        UserProfileResponse updated =
+                userService.updateProfile(id, request);
 
-        UserProfileResponse updated = userService.updateProfile(id, request);
-        return ResponseEntity.ok(ApiResponse.success("Profil berhasil diperbarui", updated));
+        return ResponseEntity.ok(
+                ApiResponse.success("Profil berhasil diperbarui", updated)
+        );
     }
 
-    // Delete akun mandiri
+    /**
+     * Menghapus akun user berdasarkan ID.
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteAccount(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteAccount(
+            @PathVariable Long id
+    ) {
         userService.deleteAccount(id);
-        return ResponseEntity.ok(ApiResponse.success("Akun berhasil dihapus", null));
-
+        return ResponseEntity.ok(
+                ApiResponse.success("Akun berhasil dihapus", null)
+        );
     }
 
+    /**
+     * Mengambil daftar user berdasarkan role.
+     */
     @GetMapping("/role/{role}")
-    public ResponseEntity<ApiResponse<?>> getUsersByRole(@PathVariable String role) {
-        return ResponseEntity.ok(ApiResponse.success(userService.getUsersByRole(role)));
+    public ResponseEntity<ApiResponse<?>> getUsersByRole(
+            @PathVariable String role
+    ) {
+        return ResponseEntity.ok(
+                ApiResponse.success(userService.getUsersByRole(role))
+        );
     }
-
 }

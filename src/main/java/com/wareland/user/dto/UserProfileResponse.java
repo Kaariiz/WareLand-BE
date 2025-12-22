@@ -1,11 +1,11 @@
 package com.wareland.user.dto;
 
-import com.wareland.user.model.UserRole;
-
 import java.time.LocalDateTime;
 
+import com.wareland.user.model.UserRole;
+
 /**
- * DTO untuk data profil user yang dikirim kembali ke client.
+ * DTO untuk mengirim data profil user ke client.
  */
 public class UserProfileResponse {
 
@@ -21,14 +21,16 @@ public class UserProfileResponse {
     public UserProfileResponse() {
     }
 
-    public UserProfileResponse(Long id,
-                               String username,
-                               String name,
-                               String email,
-                               String phoneNumber,
-                               UserRole role,
-                               LocalDateTime createdAt,
-                               LocalDateTime updatedAt) {
+    public UserProfileResponse(
+            Long id,
+            String username,
+            String name,
+            String email,
+            String phoneNumber,
+            UserRole role,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
         this.id = id;
         this.username = username;
         this.name = name;

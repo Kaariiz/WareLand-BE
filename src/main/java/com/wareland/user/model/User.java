@@ -1,15 +1,34 @@
 package com.wareland.user.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-import java.time.LocalDateTime;
-
+/**
+ * Abstract entity User sebagai root dari Buyer dan Seller.
+ */
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(
+        name = "role",
+        discriminatorType = DiscriminatorType.STRING
+)
 public abstract class User {
 
     @Id
@@ -47,16 +66,28 @@ public abstract class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    /**
+     * Proses inisialisasi saat registrasi user.
+     * Diimplementasikan oleh subclass.
+     */
     public abstract void register();
 
+    /**
+     * Placeholder login logic.
+     * Validasi password dilakukan di service layer.
+     */
     public boolean login(String username, String rawPassword) {
-        // Pencocokan password asli dilakukan di service dengan PasswordEncoder,
-        // di sini hanya sebagai placeholder OOP.
         return this.username.equals(username);
     }
 
-
-    public void updateBasicProfile(String name, String email, String phoneNumber) {
+    /**
+     * Update data profil dasar user.
+     */
+    public void updateBasicProfile(
+            String name,
+            String email,
+            String phoneNumber
+    ) {
         if (name != null) {
             this.name = name;
         }
@@ -68,13 +99,18 @@ public abstract class User {
         }
     }
 
-
+    /**
+     * Inisialisasi timestamp saat data pertama kali dibuat.
+     */
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
     }
 
+    /**
+     * Update timestamp setiap data diubah.
+     */
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
