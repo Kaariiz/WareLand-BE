@@ -1,9 +1,13 @@
 package com.wareland.property.model;
 
+import com.wareland.review.model.Review;
 import com.wareland.user.model.Seller;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "properties")
@@ -28,6 +32,9 @@ public class Property {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
     private Seller seller;
+
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     // Behavior: update basic details only (no ownership change)
     public void updateDetails(String newAddress, double newPrice, String newDescription) {
@@ -85,5 +92,13 @@ public class Property {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }
