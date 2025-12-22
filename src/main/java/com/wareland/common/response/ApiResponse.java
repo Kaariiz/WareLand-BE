@@ -1,7 +1,8 @@
 package com.wareland.common.response;
 
 /**
- * Generic API response wrapper for consistent success/error format.
+ * Wrapper response generik untuk seluruh API WareLand
+ * agar format success dan error konsisten.
  */
 public class ApiResponse<T> {
 
@@ -18,14 +19,23 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
+    /**
+     * Response sukses dengan pesan dan data.
+     */
     public static <T> ApiResponse<T> success(String message, T data) {
         return new ApiResponse<>(true, message, data);
     }
 
+    /**
+     * Response sukses dengan data saja.
+     */
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(true, null, data);
     }
 
+    /**
+     * Response error dengan pesan.
+     */
     public static <T> ApiResponse<T> error(String message) {
         return new ApiResponse<>(false, message, null);
     }

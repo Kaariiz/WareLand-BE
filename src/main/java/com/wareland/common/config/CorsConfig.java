@@ -1,37 +1,54 @@
 package com.wareland.common.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
+/**
+ * Konfigurasi CORS untuk mengatur akses frontend ke backend WareLand.
+ */
 @Configuration
 public class CorsConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        // Allowed origins: local Next.js and production FE (if exists)
+
+        // Origin frontend yang diizinkan (local & production)
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "https://ware-land-fe.vercel.app"
         ));
-        // Allow credentials so browser can send Authorization header
+
+        // Mengizinkan pengiriman Authorization header (JWT)
         config.setAllowCredentials(true);
-        // Allowed methods
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Allowed headers
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        // Expose Authorization header if needed by client
-        config.setExposedHeaders(List.of("Authorization"));
-        // Cache preflight response
+
+        // HTTP method yang diizinkan
+        config.setAllowedMethods(
+                List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        );
+
+        // Header yang diizinkan dari client
+        config.setAllowedHeaders(
+                List.of("Authorization", "Content-Type")
+        );
+
+        // Header yang dapat diakses oleh client
+        config.setExposedHeaders(
+                List.of("Authorization")
+        );
+
+        // Cache preflight request (detik)
         config.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 }

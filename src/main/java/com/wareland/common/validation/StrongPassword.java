@@ -1,26 +1,21 @@
 package com.wareland.common.validation;
 
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
 /**
- * Validates that a password contains at least:
- * - one uppercase letter,
- * - one digit,
- * - one special character (e.g., @, !, #, etc.).
- *
- * Length requirements should be enforced separately (e.g., with {@code @Size})
- * to keep this validator focused and reusable.
+ * Anotasi validasi untuk memastikan password memenuhi kriteria keamanan.
+ * Validasi panjang password dilakukan terpisah (misalnya dengan @Size).
  */
 @Documented
 @Constraint(validatedBy = StrongPasswordValidator.class)
@@ -28,7 +23,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface StrongPassword {
 
-    String message() default "Password must contain at least one uppercase letter, one digit, and one special character (e.g., @).";
+    /**
+     * Pesan error default jika validasi gagal.
+     */
+    String message() default
+            "Password must contain at least one uppercase letter, one digit, and one special character (e.g., @).";
 
     Class<?>[] groups() default {};
 

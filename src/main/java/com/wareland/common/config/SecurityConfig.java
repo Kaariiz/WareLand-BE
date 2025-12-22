@@ -1,8 +1,8 @@
 package com.wareland.common.config;
 
-import com.wareland.common.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,8 +11,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.http.HttpMethod;
 
+import com.wareland.common.security.JwtAuthenticationFilter;
+
+/**
+ * Konfigurasi keamanan aplikasi WareLand menggunakan JWT.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -26,23 +30,43 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Nonaktifkan CSRF karena menggunakan stateless JWT
                 .csrf(csrf -> csrf.disable())
-                // Integrate CORS with Spring Security using CorsConfigurationSource bean
+
+                // Integrasi CORS dengan konfigurasi terpisah
                 .cors(Customizer.withDefaults())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // Tidak menggunakan session (stateless)
+                .sessionManagement(sm ->
+                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // Aturan otorisasi endpoint
                 .authorizeHttpRequests(auth -> auth
-                        // Allow preflight requests
+                        // Izinkan preflight request
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                        .requestMatchers("/api/catalog/**").permitAll() // katalog publik & read-only
+                        // Endpoint publik autentikasi
+                        .requestMatchers(
+                                "/api/auth/register",
+                                "/api/auth/login"
+                        ).permitAll()
+                        // Katalog properti bersifat publik
+                        .requestMatchers("/api/catalog/**").permitAll()
+                        // Endpoint lain wajib autentikasi
                         .anyRequest().authenticated()
                 );
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        // Filter JWT dijalankan sebelum UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
 
         return http.build();
     }
 
+    /**
+     * Password encoder default untuk hashing password user.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

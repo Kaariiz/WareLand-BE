@@ -1,7 +1,7 @@
 package com.wareland.common.exception;
 
 /**
- * Base exception for business logic errors.
+ * Base exception untuk seluruh error logika bisnis aplikasi.
  */
 public class BusinessException extends RuntimeException {
 
