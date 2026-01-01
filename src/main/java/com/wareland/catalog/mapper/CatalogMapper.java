@@ -19,7 +19,6 @@ public class CatalogMapper {
             sellerInfo = new SellerInfo(
                     seller.getUserId(),
                     seller.getUsername(),
-                    seller.getPassword(),
                     seller.getName(),
                     seller.getEmail(),
                     seller.getPhoneNumber(),
@@ -34,6 +33,7 @@ public class CatalogMapper {
                 property.getAddress(),
                 property.getPrice(),
                 property.getDescription(),
+                property.getImageUrl(),
                 sellerInfo
         );
     }

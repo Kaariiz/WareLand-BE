@@ -11,16 +11,18 @@ public class CatalogPropertyResponse {
     private String address;
     private double price;
     private String description;
+    private String imageUrl;
     private SellerInfo seller;
 
     public CatalogPropertyResponse() {
     }
 
-    public CatalogPropertyResponse(int propertyId, String address, double price, String description, SellerInfo seller) {
+    public CatalogPropertyResponse(int propertyId, String address, double price, String description, String imageUrl, SellerInfo seller) {
         this.propertyId = propertyId;
         this.address = address;
         this.price = price;
         this.description = description;
+        this.imageUrl = imageUrl;
         this.seller = seller;
     }
 
@@ -56,6 +58,14 @@ public class CatalogPropertyResponse {
         this.description = description;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public SellerInfo getSeller() {
         return seller;
     }
@@ -70,7 +80,6 @@ public class CatalogPropertyResponse {
     public static class SellerInfo {
         private Long userId;
         private String username;
-        private String password;
         private String name;
         private String email;
         private String phoneNumber;
@@ -81,11 +90,10 @@ public class CatalogPropertyResponse {
         public SellerInfo() {
         }
 
-        public SellerInfo(Long userId, String username, String password, String name, String email,
+        public SellerInfo(Long userId, String username, String name, String email,
                           String phoneNumber, String userRole, LocalDateTime createdAt, LocalDateTime updatedAt) {
             this.userId = userId;
             this.username = username;
-            this.password = password;
             this.name = name;
             this.email = email;
             this.phoneNumber = phoneNumber;
@@ -108,14 +116,6 @@ public class CatalogPropertyResponse {
 
         public void setUsername(String username) {
             this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
         }
 
         public String getName() {
