@@ -66,7 +66,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<?>> handleOther(Exception ex) {
-        // Dapat ditambahkan logging untuk kebutuhan debugging
+        // Log error untuk debugging
+        ex.printStackTrace();
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.error("Terjadi kesalahan pada server"));

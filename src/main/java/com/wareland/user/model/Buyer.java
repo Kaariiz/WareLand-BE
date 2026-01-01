@@ -24,8 +24,8 @@ public class Buyer extends User {
      */
     @Override
     public void register() {
-        // Set role default sebagai BUYER
-        setUserRole(UserRole.BUYER);
+        // Role sudah ditentukan oleh Hibernate discriminator @DiscriminatorValue("BUYER")
+        // Tidak perlu set manual lagi
     }
 
     public List<Review> getReviews() {

@@ -1,12 +1,14 @@
 package com.wareland.user.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.wareland.property.model.Property;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import com.wareland.property.model.Property;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entity Seller sebagai turunan dari User.
@@ -24,8 +26,8 @@ public class Seller extends User {
      */
     @Override
     public void register() {
-        // Set role default sebagai SELLER
-        setUserRole(UserRole.SELLER);
+        // Role sudah ditentukan oleh Hibernate discriminator @DiscriminatorValue("SELLER")
+        // Tidak perlu set manual lagi
     }
 
     public List<Property> getProperties() {

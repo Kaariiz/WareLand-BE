@@ -6,8 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -55,10 +53,6 @@ public abstract class User {
     @NotBlank
     @Column(nullable = false, length = 20)
     private String phoneNumber;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_role", nullable = false, length = 20)
-    private UserRole userRole;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -161,12 +155,14 @@ public abstract class User {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * Mendapatkan role user berdasarkan tipe class instance.
+     * Role ditentukan oleh Hibernate discriminator, bukan field terpisah.
+     */
     public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+        if (this instanceof Seller) return UserRole.SELLER;
+        if (this instanceof Buyer) return UserRole.BUYER;
+        return null;
     }
 
     public LocalDateTime getCreatedAt() {

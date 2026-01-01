@@ -222,9 +222,16 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public List<UserProfileResponse> getUsersByRole(String role) {
-        UserRole userRole = UserRole.valueOf(role.toUpperCase());
+        Class<? extends User> userType;
+        if ("SELLER".equalsIgnoreCase(role)) {
+            userType = Seller.class;
+        } else if ("BUYER".equalsIgnoreCase(role)) {
+            userType = Buyer.class;
+        } else {
+            throw new BadRequestException("Role tidak dikenal: " + role);
+        }
 
-        return userRepository.findByUserRole(userRole)
+        return userRepository.findByType(userType)
                 .stream()
                 .map(this::mapToProfile)
                 .collect(Collectors.toList());
