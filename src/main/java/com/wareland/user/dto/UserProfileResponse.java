@@ -15,6 +15,7 @@ public class UserProfileResponse {
     private String email;
     private String phoneNumber;
     private UserRole role;
+    private String imageUrl;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -28,6 +29,7 @@ public class UserProfileResponse {
             String email,
             String phoneNumber,
             UserRole role,
+            String imageUrl,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
@@ -37,6 +39,7 @@ public class UserProfileResponse {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.role = role;
+        this.imageUrl = imageUrl;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -63,6 +66,10 @@ public class UserProfileResponse {
 
     public UserRole getRole() {
         return role;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public LocalDateTime getCreatedAt() {

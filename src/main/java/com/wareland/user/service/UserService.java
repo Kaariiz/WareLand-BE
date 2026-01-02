@@ -173,7 +173,8 @@ public class UserService {
         user.updateBasicProfile(
                 request.getName(),
                 request.getEmail(),
-                request.getPhoneNumber()
+                request.getPhoneNumber(),
+                request.getImageUrl()
         );
 
         // Update password jika diminta
@@ -248,6 +249,7 @@ public class UserService {
                 user.getEmail(),
                 user.getPhoneNumber(),
                 user.getUserRole(),
+                user.getImageUrl(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );

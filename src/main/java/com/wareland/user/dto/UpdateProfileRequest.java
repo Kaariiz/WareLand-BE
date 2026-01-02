@@ -18,6 +18,9 @@ public class UpdateProfileRequest {
 
     private String phoneNumber;
 
+    @Size(max = 500)
+    private String imageUrl;
+
     // Digunakan jika user ingin mengganti password
     private String oldPassword;
 
@@ -35,6 +38,10 @@ public class UpdateProfileRequest {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getOldPassword() {

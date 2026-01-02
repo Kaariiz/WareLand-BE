@@ -54,6 +54,9 @@ public abstract class User {
     @Column(nullable = false, length = 20)
     private String phoneNumber;
 
+    @Column(length = 500)
+    private String imageUrl;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -80,7 +83,8 @@ public abstract class User {
     public void updateBasicProfile(
             String name,
             String email,
-            String phoneNumber
+            String phoneNumber,
+            String imageUrl
     ) {
         if (name != null) {
             this.name = name;
@@ -90,6 +94,9 @@ public abstract class User {
         }
         if (phoneNumber != null) {
             this.phoneNumber = phoneNumber;
+        }
+        if (imageUrl != null) {
+            this.imageUrl = imageUrl;
         }
     }
 
@@ -153,6 +160,14 @@ public abstract class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     /**
